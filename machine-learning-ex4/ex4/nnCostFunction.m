@@ -44,7 +44,8 @@ X = [ones(m, 1) X];
 label_vec = eye(max(y));
 Y = label_vec(y,:);
 hTheta = sigmoid([ones(m,1) sigmoid(X * Theta1')] * Theta2');
-J = sum(sum(-Y.*log(hTheta) - (1-Y).*log(1-hTheta))) / m + (sum(sum(power(Theta1(:,2:end),2))) + sum(sum(power(Theta2(:,2:end),2)))) * (lambda / (2*m));
+J = sum(sum(-Y.*log(hTheta) - (1-Y).*log(1-hTheta))) / m + (sum(sum(power(Theta1(:,2:end),2))) 
+  + sum(sum(power(Theta2(:,2:end),2)))) * (lambda / (2*m));
 % Part 2: Implement the backpropagation algorithm to compute the gradients
 %         Theta1_grad and Theta2_grad. You should return the partial derivatives of
 %         the cost function with respect to Theta1 and Theta2 in Theta1_grad and
