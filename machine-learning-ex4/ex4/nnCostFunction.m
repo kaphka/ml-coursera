@@ -41,9 +41,14 @@ Theta2_grad = zeros(size(Theta2));
 %
 
 X = [ones(m, 1) X];
+a1 = X;
+z2 = a1 * Theta1';
 label_vec = eye(max(y));
 Y = label_vec(y,:);
-hTheta = sigmoid([ones(m,1) sigmoid(X * Theta1')] * Theta2');
+a2 = [ones(m,1) sigmoid(z2)];
+z3 = a2 * Theta2';
+a3 = sigmoid( z3);
+hTheta = a3;
 J = sum(sum(-Y.*log(hTheta) - (1-Y).*log(1-hTheta))) / m + (sum(sum(power(Theta1(:,2:end),2))) 
   + sum(sum(power(Theta2(:,2:end),2)))) * (lambda / (2*m));
 % Part 2: Implement the backpropagation algorithm to compute the gradients
@@ -61,6 +66,21 @@ J = sum(sum(-Y.*log(hTheta) - (1-Y).*log(1-hTheta))) / m + (sum(sum(power(Theta1
 %               over the training examples if you are implementing it for the 
 %               first time.
 %
+%i = 1;
+
+
+sigma3 = a3 .- Y;
+sigma2 = (sigma3 * Theta2) .* sigmoidGradient([ones(m,1) z2]);
+sigma2 = sigma2(:, 2:end);
+%delta1 = Theta1' * delta2(2:end) .* (a1(i,:) .* (1 - a1(i,:)))';
+%Theta2_grad = Theta2_grad + delta3 * a2(i,:);
+%Theta1_grad = Theta1_grad + delta2(2:end) * a1(i,:);
+
+delta1 = (sigma2' * a1);
+delta2 = (sigma3' * a2);
+
+Theta2_grad = delta2 ./ m + [ zeros(size(Theta2,1),1) lambda/m .* Theta2(:,2:end)];
+Theta1_grad = delta1 ./ m + [ zeros(size(Theta1,1),1) lambda/m .* Theta1(:,2:end)];
 % Part 3: Implement regularization with the cost function and gradients.
 %
 %         Hint: You can implement this around the code for

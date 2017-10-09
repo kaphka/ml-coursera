@@ -23,10 +23,10 @@ idx = zeros(size(X,1), 1);
 
 
 
-
-
-
-
+for i=1:length(X)
+  [x, ix]  = min(sqrt(sum((X(i,:) - centroids) .^2, 2)).^2);
+  idx(i) = ix;
+end
 % =============================================================
 
 end
